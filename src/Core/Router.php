@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace src\Core;
 
 class Router
 {
@@ -19,7 +19,7 @@ class Router
         $url = $this->parseURL();
 
         // verifica se controller existe, passa a primiera letra como maiuscula
-        if (file_exists("../App/Controllers/" . ucfirst($url[1]) . ".php")) {
+        if (file_exists("../src/Controllers/" . ucfirst($url[1]) . ".php")) {
             // define controller
             $this->controller = $url[1];
             unset($url[1]);
@@ -34,7 +34,7 @@ class Router
             exit;
         }
         // se existir, instancia controller
-        require_once "../App/Controllers/" . ucfirst($this->controller) . ".php";
+        require_once "../src/Controllers/" . ucfirst($this->controller) . ".php";
         $this->controller = new $this->controller;
         // -
 

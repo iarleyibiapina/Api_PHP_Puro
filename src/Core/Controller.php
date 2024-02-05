@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core;
+namespace src\Core;
 
 class Controller
 {
 
     public function model($model)
     {
-        require_once "../App/Models/" . $model . ".php";
+        require_once "../src/Models/" . $model . ".php";
         return new $model;
     }
 
