@@ -43,3 +43,6 @@ CustomLog "logs/api.sistema.com.br-access.log" common
 <'/VirtualHost>
 
 Agora ao entrar digitar o caminho do projeto em htdocs, por conta do .htaccess na raiz do projeto, será redirecionado para o index dentro da pasta public.
+
+Definir conexao como banco em
+Src/Core/Model.php
