@@ -2,7 +2,7 @@
   "name": "7iarl/api_php_3",
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "src\\": "src/"
     }
   },
   "authors": [
