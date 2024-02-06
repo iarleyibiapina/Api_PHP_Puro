@@ -17,15 +17,20 @@ class Router
     {
         // pega url já separada por /
         $url = $this->parseURL();
+        // ajustando para definir como url padrão ou 'raiz'  esta url sem o uso do virtual host
+        // http://localhost/php/Api_PHP_3/public/
+        $url = array_pop($url);
+        // var_dump($url);
 
         // verifica se controller existe, passa a primiera letra como maiuscula
-        if (file_exists("../src/Controllers/" . ucfirst($url[1]) . ".php")) {
+        if (empty($url[1])) {
+            // caso não haja parametro
+            echo "Hello Fast-Parking API";
+            exit;
+        } elseif (file_exists("../src/Controllers/" . ucfirst($url[1]) . ".php")) {
             // define controller
             $this->controller = $url[1];
             unset($url[1]);
-        } elseif (empty($url[1])) {
-            // caso não haja parametro
-            echo "Hello Fast-Parking API";
             exit;
         } else {
             // cao nao exista controller
