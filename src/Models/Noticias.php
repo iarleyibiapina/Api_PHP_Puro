@@ -1,5 +1,8 @@
 <?php
 
+namespace src\Models;
+
+use PDO;
 use src\Core\Model;
 
 class Noticias
@@ -10,18 +13,17 @@ class Noticias
 
     public function index()
     {
-        $stmt = Model::getConn()->prepate("SELECT * FROM noticias");
+        $stmt = Model::getConn()->prepare("SELECT * FROM tab_noticias");
         $results = $stmt->execute();
-
-        if ($results = $stmt->fetch(PDO::FETCH_OBJ)) {
-            return $results;
+        if ($results) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return null;
         }
     }
     public function store()
     {
-        $stmt = Model::getConn()->prepare("INSERT INTO noticias (nome_noticia_tbn, conteudo_noticia_tbn) VALUES (?, ?)");
+        $stmt = Model::getConn()->prepare("INSERT INTO tab_noticias (nome_noticia_tbn, conteudo_noticia_tbn) VALUES (?, ?)");
         $stmt->bindValue(1, $this->nome_noticia_tbn);
         $stmt->bindValue(2, $this->conteudo_noticia_tbn);
         $results = $stmt->execute();
@@ -37,7 +39,7 @@ class Noticias
     }
     public function view($id_request)
     {
-        $stmt = Model::getConn()->prepate("SELECT * FROM noticias WHERE id_noticia_tbn = ?");
+        $stmt = Model::getConn()->prepate("SELECT * FROM tab_noticias WHERE id_noticia_tbn = ?");
         $stmt->bindValue(1, $id_request);
         $results = $stmt->execute();
 
