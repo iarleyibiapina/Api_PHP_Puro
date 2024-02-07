@@ -15,31 +15,37 @@ class Router
 
     function __construct()
     {
-        // pega url já separada por /
-        $url = $this->parseURL();
         // ajustando para definir como url padrão ou 'raiz'  esta url sem o uso do virtual host
         // http://localhost/php/Api_PHP_3/public/
-        $url = array_pop($url);
-        // var_dump($url);
+        $base_url = "localhost/php/Api_PHP_3/public/";
+        $urlServer = (explode("/", $base_url));
+        // pega url atual já separada por /
+        $url = $this->parseURL();
+        // compara diferenças de url atual com o array definido como 'raiz',
+        // a diferença de / é um item a mais no array, porem a chave retornada é o index no array antigo
+        // ou seja, se um item de index 5 for diferente do array a ser comparado, ira retornar '5' => 'valor';
+        $diff = array_diff($url, $urlServer);
+        // chave é a index
+        $raiz = count($url) - count($diff);
+        // var_dump($diff[$raiz]);
 
         // verifica se controller existe, passa a primiera letra como maiuscula
-        if (empty($url[1])) {
+        if (empty($diff)) {
             // caso não haja parametro
-            echo "Hello Fast-Parking API";
-            exit;
-        } elseif (file_exists("../src/Controllers/" . ucfirst($url[1]) . ".php")) {
+            echo "Home";
+            return;
+        } else if (file_exists("../src/Controller/" . ucfirst($diff[$raiz]) . ".php")) {
             // define controller
-            $this->controller = $url[1];
-            unset($url[1]);
-            exit;
+            $this->controller = $diff[$raiz];
+            unset($diff[$raiz]);
         } else {
             // cao nao exista controller
             http_response_code(404);
             echo json_encode(["erro" => "Recurso não encontrado"]);
-            exit;
+            return;
         }
         // se existir, instancia controller
-        require_once "../src/Controllers/" . ucfirst($this->controller) . ".php";
+        require_once "../src/Controller/" . ucfirst($this->controller) . ".php";
         $this->controller = new $this->controller;
         // -
 
@@ -49,9 +55,9 @@ class Router
         switch ($this->method) {
             case "GET":
                 // se houver param 
-                if (isset($url[2])) {
+                if (isset($diff[$raiz + 1])) {
                     $this->controllerMethod = "find";
-                    $this->params = [$url[2]];
+                    $this->params = [$diff[$raiz + 1]];
                 } else {
                     $this->controllerMethod = "index";
                 }
@@ -65,8 +71,8 @@ class Router
             case "PUT":
                 $this->controllerMethod = "update";
                 // VERIFICA PARAM - ID
-                if (isset($url[2]) && is_numeric($url[2])) {
-                    $this->params = [$url[2]];
+                if (isset($diff[$raiz + 1]) && is_numeric($diff[$raiz + 1])) {
+                    $this->params = [$diff[$raiz + 1]];
                 } else {
                     http_response_code(400);
                     echo json_encode(["erro" => "É necessário informar um id"]);
@@ -76,8 +82,8 @@ class Router
 
             case "DELETE":
                 $this->controllerMethod = "delete";
-                if (isset($url[2]) && is_numeric($url[2])) {
-                    $this->params = [$url[2]];
+                if (isset($diff[$raiz + 1]) && is_numeric($diff[$raiz + 1])) {
+                    $this->params = [$diff[$raiz + 1]];
                 } else {
                     http_response_code(400);
                     echo json_encode(["erro" => "É necessário informar um id"]);
