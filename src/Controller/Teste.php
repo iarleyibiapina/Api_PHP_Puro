@@ -19,4 +19,9 @@ class teste extends Controller
 
         echo json_encode($noticia);
     }
+
+    public function store()
+    {
+        echo $this->getRequestBody();
+    }
 }

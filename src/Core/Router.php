@@ -27,6 +27,7 @@ class Router
         $diff = array_diff($url, $urlServer);
         // chave é a index
         $raiz = count($url) - count($diff);
+        var_dump($diff);
         // var_dump($diff[$raiz]);
 
         // verifica se controller existe, passa a primiera letra como maiuscula
