@@ -10,13 +10,16 @@ class Model
     public static function getConn()
     {
 
-        $host = $_ENV["localhost"];
-        $user = $_ENV["root"];
-        $password = $_ENV[""];
+        $host     = "localhost";
+        $user     = "root";
+        $password = "";
+        // $host = $_ENV["localhost"];
+        // $user = $_ENV["root"];
+        // $password = $_ENV[""];
 
         if (!isset(self::$conexao)) {
             self::$conexao = new \PDO("mysql:host=$host;port=3306;
-                        dbname=teste;", $user, $password);
+                        dbname=test;", $user, $password);
         }
 
         return self::$conexao;
