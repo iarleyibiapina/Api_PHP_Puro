@@ -25,6 +25,21 @@ class teste extends Controller
 
     public function store()
     {
-        echo $this->getRequestBody();
+        $request = $this->getRequestBody();
+        $noticia = new Noticias();
+        $noticia->nome_noticia_tbn = $request['nome_noticia_tbn'];
+        $noticia->conteudo_noticia_tbn = $request['conteudo_noticia_tbn'];
+
+        if (!$noticia->store()) {
+            echo json_encode(["messagem" => "Dados nao enviados"]);
+        }
+
+        echo json_encode(["messagem" => "Dados enviados"]);
+        // $request['nome_noticia_tbn']
+        // $request['conteudo_noticia_tbn']
+    }
+    public function update($id)
+    {
+        echo "update";
     }
 }
