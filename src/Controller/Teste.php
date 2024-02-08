@@ -11,13 +11,15 @@ class teste extends Controller
         echo  json_encode($noticia->getAll());
     }
 
-    public function find()
+    public function find($id)
     {
         $noticias = new Noticias();
         $noticia = null;
-        // var_dump($noticias->index());
-        $noticia = $noticias->index();
-
+        $noticia = $noticias->view($id);
+        if (!$noticia) {
+            echo json_encode(['message' => 'id indisponivel']);
+            return;
+        }
         echo json_encode($noticia);
     }
 
