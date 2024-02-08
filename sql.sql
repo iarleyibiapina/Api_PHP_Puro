@@ -1,4 +1,5 @@
 use teste;
+use test;
 
 create table tab_noticias (
     id_noticia_tbn INT PRIMARY KEY NOT NULL,
