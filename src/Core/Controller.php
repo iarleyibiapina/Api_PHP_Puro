@@ -18,6 +18,7 @@ class Controller
         // esses dados sao pegos em json 
         $obj = json_decode($json);
 
-        return $obj;
+        // return $obj;
+        return $_REQUEST;
     }
 }
