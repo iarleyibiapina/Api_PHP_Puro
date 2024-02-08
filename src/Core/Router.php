@@ -2,6 +2,8 @@
 
 namespace src\Core;
 
+use src\Core\Url;
+
 class Router
 {
 
@@ -15,30 +17,20 @@ class Router
 
     function __construct()
     {
-        // ajustando para definir como url padrão ou 'raiz'  esta url sem o uso do virtual host
-        // http://localhost/php/Api_PHP_3/public/
-        $base_url = "localhost/php/Api_PHP_3/public/";
-        $urlServer = (explode("/", $base_url));
-        // pega url atual já separada por /
-        $url = $this->parseURL();
-        // compara diferenças de url atual com o array definido como 'raiz',
-        // a diferença de / é um item a mais no array, porem a chave retornada é o index no array antigo
-        // ou seja, se um item de index 5 for diferente do array a ser comparado, ira retornar '5' => 'valor';
-        $diff = array_diff($url, $urlServer);
-        // chave é a index
-        $raiz = count($url) - count($diff);
-        var_dump($diff);
-        // var_dump($diff[$raiz]);
+        $url = Url::getUrl();
+        // var_dump($url);
 
         // verifica se controller existe, passa a primiera letra como maiuscula
-        if (empty($diff)) {
+        if ($url[0] === "") {
             // caso não haja parametro
-            echo "Home";
+            // echo "if / empty Url \r\n";
+            // echo "Home";
+            $this->controllerMethod = "index";
             return;
-        } else if (file_exists("../src/Controller/" . ucfirst($diff[$raiz]) . ".php")) {
+        } else if (file_exists("../src/Controller/" . ucfirst($url[0]) . ".php")) {
             // define controller
-            $this->controller = $diff[$raiz];
-            unset($diff[$raiz]);
+            $this->controller = $url[0];
+            unset($url[0]);
         } else {
             // cao nao exista controller
             http_response_code(404);
@@ -56,9 +48,9 @@ class Router
         switch ($this->method) {
             case "GET":
                 // se houver param 
-                if (isset($diff[$raiz + 1])) {
+                if (isset($url[1])) {
                     $this->controllerMethod = "find";
-                    $this->params = [$diff[$raiz + 1]];
+                    $this->params = [$url[1]];
                 } else {
                     $this->controllerMethod = "index";
                 }
@@ -72,8 +64,8 @@ class Router
             case "PUT":
                 $this->controllerMethod = "update";
                 // VERIFICA PARAM - ID
-                if (isset($diff[$raiz + 1]) && is_numeric($diff[$raiz + 1])) {
-                    $this->params = [$diff[$raiz + 1]];
+                if (isset($url[1]) && is_numeric($url[1])) {
+                    $this->params = [$url[1]];
                 } else {
                     http_response_code(400);
                     echo json_encode(["erro" => "É necessário informar um id"]);
@@ -83,8 +75,8 @@ class Router
 
             case "DELETE":
                 $this->controllerMethod = "delete";
-                if (isset($diff[$raiz + 1]) && is_numeric($diff[$raiz + 1])) {
-                    $this->params = [$diff[$raiz + 1]];
+                if (isset($url[1]) && is_numeric($url[1])) {
+                    $this->params = [$url[1]];
                 } else {
                     http_response_code(400);
                     echo json_encode(["erro" => "É necessário informar um id"]);
@@ -99,11 +91,5 @@ class Router
         }
         // passa o controller, com metodo e param
         call_user_func_array([$this->controller, $this->controllerMethod], $this->params);
-    }
-
-    private function parseURL()
-    {
-        // pega url e separa por / em um array
-        return explode("/", $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
     }
 }
