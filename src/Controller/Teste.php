@@ -53,6 +53,10 @@ class teste extends Controller
 
     public function delete($id)
     {
-        echo "delete";
+        $noticia = new Noticias();
+        if (!$noticia->delete($id)) {
+            echo json_encode(["messagem" => "Dados nao enviados"]);
+        }
+        echo json_encode(["messagem" => "Dados deletados"]);
     }
 }

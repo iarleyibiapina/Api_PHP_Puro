@@ -76,5 +76,12 @@ class Noticias
     }
     public function delete($id_request)
     {
+        $stmt = Model::getConn()->prepare("DELETE FROM tab_noticias WHERE id_noticias_tbn = ? ");
+        $stmt->bindValue(1, $id_request);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return null;
+        }
     }
 }
