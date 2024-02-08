@@ -18,7 +18,7 @@ class Router
     function __construct()
     {
         $url = Url::getUrl();
-        // var_dump($url);
+        var_dump($url);
 
         // verifica se controller existe, passa a primiera letra como maiuscula
         if ($url[0] === "") {

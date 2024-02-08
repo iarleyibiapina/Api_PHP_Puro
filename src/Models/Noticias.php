@@ -49,17 +49,30 @@ class Noticias
 
         if ($results = $stmt->fetch(PDO::FETCH_OBJ)) {
 
-            $this->id_noticia_tbn = $results->id_noticias_tbn;
-            $this->nome_noticia_tbn = $results->nome_noticia_tbn;
-            $this->conteudo_noticia_tbn = $results->conteudo_noticia_tbn;
+            // ideia: salva resultado na classe para futuras consultas direto na classe;
+            // $this->id_noticia_tbn = $results->id_noticias_tbn;
+            // $this->nome_noticia_tbn = $results->nome_noticia_tbn;
+            // $this->conteudo_noticia_tbn = $results->conteudo_noticia_tbn;
 
             return $results;
         } else {
             return null;
         }
     }
-    public function update($id_request)
+    public function update($id_request, $request)
     {
+        // $request['nome_noticia_tbn']
+        // $request['conteudo_noticia_tbn']
+        $stmt = Model::getConn()->prepare("UPDATE tab_noticias SET  nome_noticia_tbn =  ?,  conteudo_noticia_tbn = ?  WHERE id_noticias_tbn = ? ");
+        $stmt->bindValue(1, $request['nome_noticia_tbn']);
+        $stmt->bindValue(2, $request['conteudo_noticia_tbn']);
+        $stmt->bindValue(3, $id_request);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return null;
+        }
     }
     public function delete($id_request)
     {

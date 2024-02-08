@@ -8,3 +8,6 @@ create table tab_noticias (
 );
 
 SELECT * FROM tab_noticias;
+
+UPDATE tab_noticias SET  nome_noticia_tbn =  teste,  conteudo_noticia_tbn = teste  WHERE id_noticias_tbn = 29
+
