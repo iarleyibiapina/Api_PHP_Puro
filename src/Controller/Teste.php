@@ -7,7 +7,8 @@ class teste extends Controller
 {
     public function index()
     {
-        echo  json_encode(["chave" => "valor"]);
+        $noticia = new Noticias();
+        echo  json_encode($noticia->getAll());
     }
 
     public function find()
