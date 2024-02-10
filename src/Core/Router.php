@@ -21,12 +21,10 @@ class Router
         // var_dump($url);
 
         // verifica se controller existe, passa a primiera letra como maiuscula
-        if ($url[0] === "") {
+        if (empty($url)) {
             // caso não haja parametro
-            // echo "if / empty Url \r\n";
-            // echo "Home";
+            $this->controller = "home";
             $this->controllerMethod = "index";
-            return;
         } else if (file_exists("../src/Controller/" . ucfirst($url[0]) . ".php")) {
             // define controller
             $this->controller = $url[0];
@@ -34,7 +32,7 @@ class Router
         } else {
             // cao nao exista controller
             http_response_code(404);
-            echo json_encode(["erro" => "Recurso não encontrado"]);
+            echo json_encode(["erro" => "Url/metodo não encontrado"]);
             return;
         }
         // se existir, instancia controller
@@ -68,7 +66,7 @@ class Router
                     $this->params = [$url[1]];
                 } else {
                     http_response_code(400);
-                    echo json_encode(["erro" => "É necessário informar um id"]);
+                    echo json_encode(["erro" => "É necessário informar um id", "method" => "update"]);
                     exit;
                 }
                 break;
@@ -79,13 +77,14 @@ class Router
                     $this->params = [$url[1]];
                 } else {
                     http_response_code(400);
-                    echo json_encode(["erro" => "É necessário informar um id"]);
+                    echo json_encode(["erro" => "É necessário informar um id", "method" => "delete"]);
                     exit;
                 }
                 break;
 
             default:
-                echo "Método não suportado";
+                http_response_code(405);
+                echo json_encode(["erro" => "Método não suportado", "method" => "undefinied"]);
                 // exit;
                 break;
         }
