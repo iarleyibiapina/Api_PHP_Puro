@@ -1,7 +1,3 @@
 <?php
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-// $dotenv->safeLoad();
-$dotenv->load();
-
+require_once('./vendor/autoload.php');
 header("Location: public/");

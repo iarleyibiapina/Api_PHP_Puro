@@ -46,3 +46,5 @@ Agora ao entrar digitar o caminho do projeto em htdocs, por conta do .htaccess n
 
 Definir conexao como banco em
 Src/Core/Model.php
+
+<P> DEFINIR CAMINHO DO PROJETO EM DOTENV </P>
