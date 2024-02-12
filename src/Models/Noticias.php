@@ -39,7 +39,7 @@ class Noticias
         $stmt = Model::getConn()->prepare("INSERT INTO tab_noticias (nome_noticia_tbn, conteudo_noticia_tbn) VALUES (?, ?)");
         $stmt->bindValue(1, $this->nome_noticia_tbn);
         $stmt->bindValue(2, $this->conteudo_noticia_tbn);
-        if (!$stmt->execute()) {
+        if ($stmt->execute()) {
             return true;
         } else {
             return false;
@@ -98,6 +98,24 @@ class Noticias
         $stmt = Model::getConn()->prepare("DELETE FROM tab_noticias WHERE id_noticias_tbn = ? ");
         $stmt->bindValue(1, $id_request);
         if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * funçao para ver se linha existe
+     * 
+     * @return bool
+     */
+    public function exists($id)
+    {
+        $stmt = Model::getConn()->prepare("SELECT * FROM tab_noticias WHERE id_noticias_tbn = ?");
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        // verifica se existe com base na qunatidade de linhas encontradas
+        if ($stmt->rowCount() > 0) {
             return true;
         } else {
             return false;

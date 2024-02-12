@@ -40,6 +40,12 @@ class Noticia extends Controller
     public function store()
     {
         $request = $_REQUEST;
+        // trata se algum campo esperado vazio
+        if (empty($request['nome_noticia_tbn']) || empty($request['conteudo_noticia_tbn'])) {
+            http_response_code(400);
+            echo json_encode(['erro' => 'Titulo e/ou conteudo da noticia vazia'], JSON_UNESCAPED_SLASHES);
+            exit;
+        }
         $noticia = new Noticias();
         // Envia request para a classe.
         $noticia->nome_noticia_tbn     = $request['nome_noticia_tbn'];
@@ -50,6 +56,7 @@ class Noticia extends Controller
                 "messagem" => "Dados nao enviados ao criar",
                 "method" => "store"
             ]);
+            exit;
         }
         http_response_code(201);
         echo json_encode(["messagem" => "Dados enviados"]);
@@ -60,8 +67,23 @@ class Noticia extends Controller
      */
     public function update($id)
     {
-        $request = $_REQUEST;
         $noticia = new Noticias();
+        if (!$noticia->exists($id)) {
+            http_response_code(400);
+            echo json_encode([
+                'message' => 'id indisponivel ou inexistente',
+                "method" => "delete"
+            ]);
+            exit;
+        }
+
+        $request = $_REQUEST;
+        // trata se algum campo esperado vazio
+        if (empty($request['nome_noticia_tbn']) || empty($request['conteudo_noticia_tbn'])) {
+            http_response_code(400);
+            echo json_encode(['erro' => 'Titulo e/ou conteudo da noticia vazia'], JSON_UNESCAPED_SLASHES);
+            exit;
+        }
         // Envia request para a classe.
         $noticia->nome_noticia_tbn     = $request['nome_noticia_tbn'];
         $noticia->conteudo_noticia_tbn = $request['conteudo_noticia_tbn'];
@@ -83,6 +105,16 @@ class Noticia extends Controller
     public function delete($id)
     {
         $noticia = new Noticias();
+
+        if (!$noticia->exists($id)) {
+            http_response_code(400);
+            echo json_encode([
+                'message' => 'id indisponivel ou inexistente',
+                "method" => "delete"
+            ]);
+            exit;
+        }
+
         if (!$noticia->delete($id)) {
             http_response_code(400);
             echo json_encode([

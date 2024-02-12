@@ -56,10 +56,24 @@ class Router
                 break;
 
             case "POST":
+                // verifica se todos os campos vazios
+                if (empty($_REQUEST)) {
+                    http_response_code(400);
+                    echo json_encode(['erro' => 'Titulo e/ou conteudo da noticia vazia', 'method' => 'post'], JSON_UNESCAPED_SLASHES);
+                    exit;
+                }
+
                 $this->controllerMethod = "store";
                 break;
 
             case "PUT":
+                // verifica se todos os campos vazios
+                if (empty($_REQUEST)) {
+                    http_response_code(400);
+                    echo json_encode(['erro' => 'Titulo e/ou conteudo da noticia vazia', 'method' => 'update'], JSON_UNESCAPED_SLASHES);
+                    exit;
+                }
+
                 $this->controllerMethod = "update";
                 // VERIFICA PARAM - ID
                 // este explode trata este problema de url = ../10?chave... que antes precisava ser ../10/?chave...
