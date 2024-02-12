@@ -62,8 +62,12 @@ class Router
             case "PUT":
                 $this->controllerMethod = "update";
                 // VERIFICA PARAM - ID
-                if (isset($url[1]) && is_numeric($url[1])) {
-                    $this->params = [$url[1]];
+                // este explode trata este problema de url = ../10?chave... que antes precisava ser ../10/?chave...
+                $updateUrl = explode("?", $url[1]);
+                // posicao 0 é id
+                // posicao 1 é request
+                if (isset($updateUrl[0]) && is_numeric($updateUrl[0])) {
+                    $this->params = [$updateUrl[0]];
                 } else {
                     http_response_code(400);
                     echo json_encode(["erro" => "É necessário informar um id", "method" => "update"]);
