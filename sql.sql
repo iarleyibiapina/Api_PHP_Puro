@@ -1,5 +1,5 @@
+-- Create DATABASE teste;
 use teste;
-use test;
 
 create table tab_noticias (
     id_noticia_tbn INT PRIMARY KEY NOT NULL,
@@ -9,5 +9,5 @@ create table tab_noticias (
 
 SELECT * FROM tab_noticias;
 
-UPDATE tab_noticias SET  nome_noticia_tbn =  teste,  conteudo_noticia_tbn = teste  WHERE id_noticias_tbn = 29
+
 
